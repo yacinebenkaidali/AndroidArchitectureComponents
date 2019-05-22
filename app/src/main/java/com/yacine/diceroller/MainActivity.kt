@@ -1,43 +1,26 @@
 package com.yacine.diceroller
 
-import android.support.v7.app.AppCompatActivity
+import android.databinding.DataBindingUtil
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
+import android.support.v7.app.AppCompatActivity
+import com.yacine.diceroller.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binder: ActivityMainBinding
+    private val user = User("Yacine", "BENKAIDALI")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        roll_button.setOnClickListener {
-            rollDice()
-        }
-    }
+//        setContentView(R.layout.activity_main)
+        binder = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-    private fun rollDice() {
-        val rand = Random().nextInt(6) + 1
-        val diceRollImage = when (rand) {
-            1 -> {
-                R.drawable.dice_1
-            }
-            2 -> {
-                R.drawable.dice_2
-            }
-            3 -> {
-                R.drawable.dice_3
-            }
-            4 -> {
-                R.drawable.dice_4
-            }
-            5 -> {
-                R.drawable.dice_5
-            }
-            else -> {
-                R.drawable.dice_6
-            }
+        binder.user = user
+        binder.user!!.nickName = "Mate"
+        binder.nameDisplay.setOnClickListener {
+            user.name = binder.nameInput.text.toString()
+            binder.invalidateAll()
         }
-        dice_num.setImageResource(diceRollImage)
+
     }
 
 }
