@@ -20,7 +20,6 @@
     tools:context=".GameFragment">
 
     <data>
-
         <variable
             name="game"
             type="com.yacine.diceroller.GameFragment" />
