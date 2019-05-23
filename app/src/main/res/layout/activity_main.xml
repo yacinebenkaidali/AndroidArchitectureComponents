@@ -18,18 +18,29 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
 >
-
-    <LinearLayout
+    <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/drawerLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-        <fragment
+    >
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:name="androidx.navigation.fragment.NavHostFragment"
-                app:navGraph="@navigation/navigation"
-                app:defaultNavHost="true"
-                android:id="@+id/navHostFragment" tools:layout="@layout/fragment_title"/>
-    </LinearLayout>
-
+                android:orientation="vertical">
+            <fragment
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    app:navGraph="@navigation/navigation"
+                    app:defaultNavHost="true"
+                    android:id="@+id/navHostFragment" tools:layout="@layout/fragment_title"/>
+        </LinearLayout>
+        <com.google.android.material.navigation.NavigationView
+                android:id="@+id/navView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                app:headerLayout="@layout/nav_header"
+                app:menu="@menu/navdrawer_menu"/>
+    </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

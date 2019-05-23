@@ -29,4 +29,6 @@
     </fragment>
     <fragment android:id="@+id/aboutFragment" android:name="com.yacine.diceroller.AboutFragment"
               android:label="fragment_about" tools:layout="@layout/fragment_about"/>
+    <fragment android:id="@+id/rulesFragment" android:name="com.yacine.diceroller.RulesFragment"
+              android:label="fragment_rules" tools:layout="@layout/fragment_rules"/>
 </navigation>
