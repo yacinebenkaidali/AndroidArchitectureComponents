@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.i("create")
+
         if (savedInstanceState != null) {
             revenue = savedInstanceState.getInt("revenue", 0)
         }
@@ -88,9 +89,11 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         binding.dessertButton.setImageResource(currentDessert.imageId)
     }
 
-    /**
-     * Updates the score when the dessert is clicked. Possibly shows a new dessert.
-     */
+    override fun onResume() {
+        super.onResume()
+        dessertTimer.resumeTimer()
+        Timber.i("Done")
+    }
     private fun onDessertClicked() {
 
         // Update the score
