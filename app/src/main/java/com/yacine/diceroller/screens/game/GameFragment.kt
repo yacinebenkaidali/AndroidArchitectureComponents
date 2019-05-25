@@ -23,7 +23,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment.findNavController
-import com.example.android.guesstheword.screens.game.GameFragmentDirections
 import com.yacine.diceroller.R
 import com.yacine.diceroller.databinding.GameFragmentBinding
 

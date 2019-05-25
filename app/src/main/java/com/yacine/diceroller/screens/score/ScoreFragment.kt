@@ -24,8 +24,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.android.guesstheword.screens.score.ScoreFragmentArgs
-import com.example.android.guesstheword.screens.score.ScoreFragmentDirections
 import com.yacine.diceroller.R
 import com.yacine.diceroller.databinding.ScoreFragmentBinding
 
