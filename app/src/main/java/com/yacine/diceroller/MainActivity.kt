@@ -18,11 +18,6 @@ package com.yacine.diceroller
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import com.yacine.diceroller.screens.game.GameFragment
-import com.yacine.diceroller.screens.game.GameViewModel
-import timber.log.Timber
 
 /**
  * Creates an Activity that hosts all of the fragments in the app

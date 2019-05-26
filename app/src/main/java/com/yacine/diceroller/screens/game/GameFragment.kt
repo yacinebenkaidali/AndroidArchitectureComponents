@@ -17,6 +17,7 @@
 package com.yacine.diceroller.screens.game
 
 import android.os.Bundle
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +28,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.yacine.diceroller.R
 import com.yacine.diceroller.databinding.GameFragmentBinding
-import timber.log.Timber
 
 /**
  * Fragment where the game is played
@@ -55,13 +55,15 @@ class GameFragment : Fragment() {
         viewModel.word.observe(this, Observer { newWord ->
             binding.wordText.text = newWord
         })
-        viewModel.eventGameFinish.observe(this, Observer { newEventGameFinish->
+        viewModel.eventGameFinish.observe(this, Observer { newEventGameFinish ->
             if (newEventGameFinish) {
                 gameFinished()
                 viewModel.onGameFinishComplete()
             }
         })
-
+        viewModel.currentTime.observe(this, Observer { newTime ->
+            binding.timerText.text = DateUtils.formatElapsedTime(newTime)
+        })
 
         binding.correctButton.setOnClickListener {
             viewModel.onCorrect()
@@ -71,18 +73,11 @@ class GameFragment : Fragment() {
         }
 
         return binding.root
-
     }
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
-        Timber.i("Called ViewModelProviders.of")
     }
-
-    /**
-     * Resets the list of words and randomizes the order
-     */
-
 
     /**
      * Called when the game is finished
@@ -92,16 +87,6 @@ class GameFragment : Fragment() {
         val action = GameFragmentDirections.actionGameToScore(currentScore)
         findNavController(this).navigate(action)
     }
-
-    /**
-     * Moves to the next word in the list
-     */
-
-
-    /** Methods for buttons presses **/
-
-
-    /** Methods for updating the UI **/
 
 
 }
