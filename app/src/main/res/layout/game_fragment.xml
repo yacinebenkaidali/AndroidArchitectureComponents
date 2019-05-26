@@ -48,6 +48,7 @@
 
         <TextView
                 android:id="@+id/word_text"
+                android:text="@{gameViewModel.word}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
@@ -86,6 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
+                android:text="@{@string/quote_format(gameViewModel.score)}"
                 android:fontFamily="sans-serif"
                 android:textColor="@color/grey_text_color"
                 android:textSize="14sp"

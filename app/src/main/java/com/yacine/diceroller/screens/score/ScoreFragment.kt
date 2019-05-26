@@ -50,16 +50,16 @@ class ScoreFragment : Fragment() {
             false
         )
 
-
         val scoreFragmentArgs by navArgs<ScoreFragmentArgs>()
-        binding.scoreText.text = scoreFragmentArgs.score.toString()
+//        binding.scoreText.text = scoreFragmentArgs.score.toString()
         viewModelFactory = ScoreViewModelFactory(finalScore = scoreFragmentArgs.score)
-        viewModel=ViewModelProviders.of(this, viewModelFactory).get(ScoreViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ScoreViewModel::class.java)
         binding.scoreViewModel = viewModel
+        binding.lifecycleOwner = this
 
-        viewModel.score.observe(this, Observer { newScore ->
-            binding.scoreText.text = newScore.toString()
-        })
+//        viewModel.score.observe(this, Observer { newScore ->
+//            binding.scoreText.text = newScore.toString()
+//        })
         binding.playAgainButton.setOnClickListener {
             viewModel.onPlayAgain()
         }
