@@ -16,11 +16,15 @@
 
 package com.yacine.diceroller.screens.game
 
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -50,7 +54,7 @@ class GameFragment : Fragment() {
             false
         )
         binding.gameViewModel = viewModel
-        binding.lifecycleOwner=this
+        binding.lifecycleOwner = this
 
 //        viewModel.score.observe(this, Observer { newScore ->
 //            binding.scoreText.text = newScore.toString()
@@ -64,8 +68,11 @@ class GameFragment : Fragment() {
                 viewModel.onGameFinishComplete()
             }
         })
-        viewModel.currentTime.observe(this, Observer { newTime ->
-            binding.timerText.text = DateUtils.formatElapsedTime(newTime)
+        viewModel.buzzEvent.observe(this, Observer { buzzType ->
+            if (buzzType != GameViewModel.BuzzType.NO_BUZZ) {
+                buzz(buzzType.pattern)
+                viewModel.onBazzComplete()
+            }
         })
 
 //        binding.correctButton.setOnClickListener {
@@ -80,6 +87,18 @@ class GameFragment : Fragment() {
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
+    }
+
+    private fun buzz(pattern: LongArray) {
+        val buzzer = activity?.getSystemService<Vibrator>()
+
+        buzzer?.let {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                buzzer.vibrate(VibrationEffect.createWaveform(pattern, -1))
+            } else {
+                buzzer.vibrate(pattern, -1)
+            }
+        }
     }
 
     /**
