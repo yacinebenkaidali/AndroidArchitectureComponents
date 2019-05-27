@@ -14,19 +14,9 @@
   ~ limitations under the License.
   -->
 
-<!-- The merge tag can be used to eliminate redundant layouts when
-     including layouts, and it's a good idea to use it.
-     See: https://developer.android.com/training/improving-layouts/reusing-layouts -->
-
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <fragment
-        android:id="@+id/nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/navigation" />
-
-</merge>
+<resources>
+    <dimen name="margin">16dp</dimen>
+    <dimen name="icon_size">64dp</dimen>
+    <dimen name="title_text_size">20sp</dimen>
+    <dimen name="triple_margin">48dp</dimen>
+</resources>
