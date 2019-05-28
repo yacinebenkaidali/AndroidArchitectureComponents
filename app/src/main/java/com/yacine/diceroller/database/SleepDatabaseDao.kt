@@ -16,4 +16,27 @@
 
 package com.yacine.diceroller.database
 
-interface SleepDatabaseDao
+import androidx.lifecycle.LiveData
+import androidx.room.*
+
+@Dao
+interface SleepDatabaseDao{
+    @Insert
+    fun insertSleepNight (sleepNight: SleepNight)
+    @Delete
+    fun deleteSleepNight(sleepNight: SleepNight)
+    @Update
+    fun update(night: SleepNight)
+
+    @Query("delete from daily_sleep_quality_table")
+    fun clear()
+
+    @Query("SELECT * FROM daily_sleep_quality_table ORDER BY nightId DESC")
+    fun getAllNights(): LiveData<List<SleepNight>>
+
+    @Query("SELECT * FROM daily_sleep_quality_table ORDER BY nightId DESC LIMIT 1")
+    fun getTonight(): SleepNight?
+
+    @Query("select * from daily_sleep_quality_table where nightId=:key")
+    fun get(key: Long): SleepNight?
+}
