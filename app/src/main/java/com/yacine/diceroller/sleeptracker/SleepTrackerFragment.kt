@@ -22,7 +22,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.yacine.diceroller.R
+import com.yacine.diceroller.database.SleepDatabase
 import com.yacine.diceroller.databinding.FragmentSleepTrackerBinding
 
 /**
@@ -39,10 +41,16 @@ class SleepTrackerFragment : Fragment() {
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
         // Get a reference to the binding object and inflate the fragment views.
         val binding: FragmentSleepTrackerBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_sleep_tracker, container, false)
+        binding.lifecycleOwner  =this
+        val application = requireNotNull(this.activity).application
+        val dataSource =SleepDatabase.getInstance(application).sleepDatabaseDao
+        val viewModelFactory=SleepTrackerViewModelFactory(dataSource,application)
+        val sleepViewModel =ViewModelProviders.of(this,viewModelFactory).get(SleepTrackerViewModel::class.java)
+
+        binding.sleepTrackerViewModel=sleepViewModel
 
         return binding.root
     }

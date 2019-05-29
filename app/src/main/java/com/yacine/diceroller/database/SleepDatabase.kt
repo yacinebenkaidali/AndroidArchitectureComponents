@@ -20,14 +20,17 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [SleepNight::class], version = 1,  exportSchema = false)
-abstract class SleepDatabase : RoomDatabase(){
+@Database(entities = [SleepNight::class], version = 1, exportSchema = false)
+abstract class SleepDatabase : RoomDatabase() {
     abstract val sleepDatabaseDao: SleepDatabaseDao
+
     companion object {
         @Volatile
-        private var INSTANCE:SleepDatabase?=null
-        fun getInstance (context:Context):SleepDatabase {
+        private var INSTANCE: SleepDatabase? = null
+
+        fun getInstance(context: Context): SleepDatabase {
             synchronized(this) {
                 var instance = INSTANCE
                 if (instance == null) {
@@ -35,8 +38,9 @@ abstract class SleepDatabase : RoomDatabase(){
                         context.applicationContext,
                         SleepDatabase::class.java,
                         "sleep_history_database"
-                    ).fallbackToDestructiveMigration().build()
-                    INSTANCE=instance
+                    ).fallbackToDestructiveMigration()//upon changing the schema of the database it shall be recreated
+                        .build()
+                    INSTANCE = instance
                 }
                 return instance
             }
