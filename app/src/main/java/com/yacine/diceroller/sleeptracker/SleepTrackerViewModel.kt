@@ -21,9 +21,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.example.android.trackmysleepquality.formatNights
 import com.yacine.diceroller.database.SleepDatabaseDao
 import com.yacine.diceroller.database.SleepNight
-import com.yacine.diceroller.formatNights
 import kotlinx.coroutines.*
 
 /**
