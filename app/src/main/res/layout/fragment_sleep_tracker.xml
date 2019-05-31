@@ -65,6 +65,7 @@
              you can set it for the Views using this lambda pattern. -->
 
         <Button
+                android:enabled="@{sleepTrackerViewModel.startButtonVisible}"
                 android:id="@+id/start_button"
                 style="@style/SleepButtons"
                 android:layout_width="wrap_content"
@@ -78,6 +79,7 @@
                 app:layout_constraintStart_toStartOf="parent"/>
 
         <Button
+                android:enabled="@{sleepTrackerViewModel.stopButtonVisible}"
                 android:id="@+id/stop_button"
                 style="@style/SleepButtons"
                 android:onClick="@{()->sleepTrackerViewModel.onStopTracking()}"
@@ -91,6 +93,7 @@
                 app:layout_constraintTop_toTopOf="parent"/>
 
         <Button
+                android:enabled="@{sleepTrackerViewModel.clearButtonVisible}"
                 android:id="@+id/clear_button"
                 style="@style/SleepButtons"
                 android:onClick="@{()-> sleepTrackerViewModel.onClear()}"

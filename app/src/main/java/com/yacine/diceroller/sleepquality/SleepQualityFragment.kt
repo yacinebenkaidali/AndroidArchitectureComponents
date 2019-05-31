@@ -22,7 +22,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.yacine.diceroller.R
+import com.yacine.diceroller.database.SleepDatabase
 import com.yacine.diceroller.databinding.FragmentSleepQualityBinding
 
 /**
@@ -38,14 +42,30 @@ class SleepQualityFragment : Fragment() {
      *
      * This function uses DataBindingUtil to inflate R.layout.fragment_sleep_quality.
      */
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         // Get a reference to the binding object and inflate the fragment views.
         val binding: FragmentSleepQualityBinding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_sleep_quality, container, false)
+            inflater, R.layout.fragment_sleep_quality, container, false
+        )
 
         val application = requireNotNull(this.activity).application
+        val argument = SleepQualityFragmentArgs.fromBundle(arguments!!)
+        val dataSource = SleepDatabase.getInstance(application).sleepDatabaseDao
+        val viewModelFactory = SleepQualityViewModelFactory(argument.sleepNightKey, dataSource)
+
+        val sleepQualityViewModel = ViewModelProviders.of(this,viewModelFactory).get(SleepQualityViewModel::class.java)
+        binding.lifecycleOwner = this
+        binding.sleepQualityViewModel = sleepQualityViewModel
+        sleepQualityViewModel.navigateToSleepTracker.observe(this, Observer {
+            if (it == true) {
+                findNavController().navigate(SleepQualityFragmentDirections.actionSleepQualityFragmentToSleepTrackerFragment())
+                sleepQualityViewModel.doneNavigating()
+            }
+        })
 
         return binding.root
     }
