@@ -29,7 +29,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.yacine.diceroller.R
 import com.yacine.diceroller.database.SleepDatabase
 import com.yacine.diceroller.databinding.FragmentSleepTrackerBinding
-import com.yacine.diceroller.sleepquality.SleepQualityFragmentDirections
 
 /**
  * A fragment with buttons to record start and end times for sleep, which are saved in
@@ -37,7 +36,7 @@ import com.yacine.diceroller.sleepquality.SleepQualityFragmentDirections
  * (Because we have not learned about RecyclerView yet.)
  */
 class SleepTrackerFragment : Fragment() {
-
+    val sleepNightAdapter = SleepNightAdapter()
     /**
      * Called when the Fragment is ready to display content to the screen.
      *
@@ -52,6 +51,8 @@ class SleepTrackerFragment : Fragment() {
             inflater, R.layout.fragment_sleep_tracker, container, false
         )
         binding.lifecycleOwner = this
+        binding.sleepList.adapter=sleepNightAdapter
+
         val application = requireNotNull(this.activity).application
         val dataSource = SleepDatabase.getInstance(application).sleepDatabaseDao
         val viewModelFactory = SleepTrackerViewModelFactory(dataSource, application)
@@ -64,6 +65,11 @@ class SleepTrackerFragment : Fragment() {
                     )
                 )
                 sleepViewModel.doneNavigating()
+            }
+        })
+        sleepViewModel.nights.observe(this, Observer {nights->
+            if (nights != null) {
+                sleepNightAdapter.data=nights
             }
         })
 
