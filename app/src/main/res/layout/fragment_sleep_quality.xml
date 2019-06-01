@@ -47,7 +47,7 @@
                 app:layout_constraintTop_toTopOf="parent"/>
 
         <ImageView
-                android:onClick="@{() -> sleepQualityViewModel.onSetSleepQuality(1)}"
+                android:onClick="@{() -> sleepQualityViewModel.onSetSleepQuality(0)}"
                 android:id="@+id/quality_zero_image"
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
@@ -60,7 +60,7 @@
                 app:srcCompat="@drawable/ic_sleep_0"/>
 
         <ImageView
-                android:onClick="@{() -> sleepQualityViewModel.onSetSleepQuality(2)}"
+                android:onClick="@{() -> sleepQualityViewModel.onSetSleepQuality(1)}"
                 android:id="@+id/quality_one_image"
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
@@ -73,7 +73,7 @@
         <ImageView
                 android:id="@+id/quality_two_image"
                 android:layout_width="@dimen/icon_size"
-                android:onClick="@{() -> sleepQualityViewModel.onSetSleepQuality(3)}"
+                android:onClick="@{() -> sleepQualityViewModel.onSetSleepQuality(2)}"
                 android:layout_height="@dimen/icon_size"
                 android:layout_marginEnd="@dimen/margin"
                 android:contentDescription="@string/quality_2"
@@ -85,7 +85,7 @@
         <ImageView
                 android:id="@+id/quality_three_image"
                 android:layout_width="@dimen/icon_size"
-                android:onClick="@{() -> sleepQualityViewModel.onSetSleepQuality(4)}"
+                android:onClick="@{() -> sleepQualityViewModel.onSetSleepQuality(3)}"
                 android:layout_height="@dimen/icon_size"
                 android:layout_marginStart="@dimen/margin"
                 android:layout_marginTop="@dimen/margin"
@@ -100,7 +100,7 @@
 
         <ImageView
                 android:id="@+id/quality_four_image"
-                android:onClick="@{() -> sleepQualityViewModel.onSetSleepQuality(5)}"
+                android:onClick="@{() -> sleepQualityViewModel.onSetSleepQuality(4)}"
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:contentDescription="@string/quality_4"
@@ -115,7 +115,7 @@
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:layout_marginEnd="@dimen/margin"
-                android:onClick="@{() -> sleepQualityViewModel.onSetSleepQuality(6)}"
+                android:onClick="@{() -> sleepQualityViewModel.onSetSleepQuality(5)}"
                 android:contentDescription="@string/quality_5"
                 app:layout_constraintBottom_toBottomOf="@+id/quality_four_image"
                 app:layout_constraintEnd_toEndOf="parent"
