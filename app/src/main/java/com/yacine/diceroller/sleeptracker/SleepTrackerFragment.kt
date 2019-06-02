@@ -20,11 +20,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.yacine.diceroller.R
 import com.yacine.diceroller.database.SleepDatabase
@@ -36,7 +38,9 @@ import com.yacine.diceroller.databinding.FragmentSleepTrackerBinding
  * (Because we have not learned about RecyclerView yet.)
  */
 class SleepTrackerFragment : Fragment() {
-    private val sleepNightAdapter = SleepNightAdapter()
+    private val sleepNightAdapter = SleepNightAdapter(SleepNightListener { nightId->
+        Toast.makeText(context, "$nightId", Toast.LENGTH_LONG).show()
+    })
     /**
      * Called when the Fragment is ready to display content to the screen.
      *
@@ -51,7 +55,9 @@ class SleepTrackerFragment : Fragment() {
             inflater, R.layout.fragment_sleep_tracker, container, false
         )
         binding.lifecycleOwner = this
-        binding.sleepList.adapter=sleepNightAdapter
+        binding.sleepList.adapter = sleepNightAdapter
+        val manager = GridLayoutManager(activity, 3)
+        binding.sleepList.layoutManager = manager
 
         val application = requireNotNull(this.activity).application
         val dataSource = SleepDatabase.getInstance(application).sleepDatabaseDao
@@ -67,7 +73,7 @@ class SleepTrackerFragment : Fragment() {
                 sleepViewModel.doneNavigating()
             }
         })
-        sleepViewModel.nights.observe(this, Observer {nights->
+        sleepViewModel.nights.observe(this, Observer { nights ->
             if (nights != null) {
                 sleepNightAdapter.submitList(nights)
             }

@@ -16,24 +16,15 @@
 
 package com.yacine.diceroller.sleeptracker
 
-import android.content.Context
-import android.content.res.Resources
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.android.trackmysleepquality.convertDurationToFormatted
-import com.example.android.trackmysleepquality.convertNumericQualityToString
-import com.yacine.diceroller.R
 import com.yacine.diceroller.database.SleepNight
 import com.yacine.diceroller.databinding.ListItemSleepNightBinding
 
-class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(SleepNightDiffCallback()) {
+class SleepNightAdapter(val clickListener: SleepNightListener) : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(SleepNightDiffCallback()) {
 //    var data = listOf<SleepNight>()
 //        set(value) {
 //            field = value
@@ -47,8 +38,8 @@ class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(
 //    override fun getItemCount() = data.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getItem(position)
-        holder.bind(item)
+        holder.bind(clickListener,getItem(position)!!)
+//        holder.bind(item)
     }
 
     class ViewHolder private constructor(val binding: ListItemSleepNightBinding) :
@@ -56,7 +47,6 @@ class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(
 //        private val sleepLength: TextView = binding.sleepLength
 //        private val quality: TextView = binding.qualityString
 //        private val qualityImage: ImageView = binding.qualityImage
-
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
@@ -66,8 +56,9 @@ class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(
             }
         }
 
-        fun bind(item: SleepNight) {
+        fun bind(clickListener: SleepNightListener,item: SleepNight) {
             binding.sleep = item
+            binding.clickListener=clickListener
             binding.executePendingBindings()
 //            val res: Resources = itemView.context.resources
 //            sleepLength.text = convertDurationToFormatted(item.startTimeMilli, item.endTimeMilli, res)
@@ -76,7 +67,7 @@ class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(
 //            qualityImage.setImageResource(
 //                when (item.sleepQuality) {
 //                    0 -> R.drawable.ic_sleep_0
-//                    1 -> R.drawable.ic_sleep_1
+//                    1 -> R.drawable.i c_sleep_1
 //                    2 -> R.drawable.ic_sleep_2
 //                    3 -> R.drawable.ic_sleep_3
 //                    4 -> R.drawable.ic_sleep_4
@@ -86,6 +77,10 @@ class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(
 //            )
         }
     }
+
+}
+class SleepNightListener(val clickListener: (sleepId: Long) -> Unit) {
+    fun onClick(night: SleepNight) = clickListener(night.nightId)
 }
 
 class SleepNightDiffCallback :

@@ -3,10 +3,12 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <variable name="clickListener" type="com.yacine.diceroller.sleeptracker.SleepNightListener"/>
         <variable name="sleep" type="com.yacine.diceroller.database.SleepNight"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
             android:orientation="vertical"
+            android:onClick="@{() -> clickListener.onClick()}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <ImageView
@@ -15,27 +17,18 @@
                 android:layout_height="60dp"
                 android:id="@+id/quality_image" app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@drawable/ic_sleep_5"
-                android:layout_marginTop="8dp" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="16dp" app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="187dp"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="160dp"/>
         <TextView
                 app:sleepQualityString="@{sleep}"
                 android:text="TextView"
                 android:layout_width="0dp"
                 android:layout_height="20dp"
-                android:id="@+id/quality_string" android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="16dp" app:layout_constraintStart_toEndOf="@+id/quality_image"
-                app:layout_constraintTop_toTopOf="@+id/quality_image" android:layout_marginTop="8dp"
-                app:layout_constraintHorizontal_bias="0.0"/>
-        <TextView
-                app:SleepDurationFormatted="@{sleep}"
-                android:text="TextView"
-                android:layout_width="0dp"
-                android:layout_height="20dp"
-                android:id="@+id/sleep_length"
-                app:layout_constraintTop_toBottomOf="@+id/quality_string" android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="@+id/quality_string"
-                app:layout_constraintStart_toStartOf="@+id/quality_string"/>
+                android:id="@+id/quality_string"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/quality_image"
+                app:layout_constraintEnd_toEndOf="@+id/quality_image"
+                app:layout_constraintStart_toStartOf="@+id/quality_image"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
