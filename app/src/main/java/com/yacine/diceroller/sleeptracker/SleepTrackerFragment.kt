@@ -36,7 +36,7 @@ import com.yacine.diceroller.databinding.FragmentSleepTrackerBinding
  * (Because we have not learned about RecyclerView yet.)
  */
 class SleepTrackerFragment : Fragment() {
-    val sleepNightAdapter = SleepNightAdapter()
+    private val sleepNightAdapter = SleepNightAdapter()
     /**
      * Called when the Fragment is ready to display content to the screen.
      *
@@ -69,7 +69,7 @@ class SleepTrackerFragment : Fragment() {
         })
         sleepViewModel.nights.observe(this, Observer {nights->
             if (nights != null) {
-                sleepNightAdapter.data=nights
+                sleepNightAdapter.submitList(nights)
             }
         })
 
