@@ -16,12 +16,14 @@
 
 package com.yacine.diceroller.sleeptracker
 
+import android.content.Context
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +31,7 @@ import com.example.android.trackmysleepquality.convertDurationToFormatted
 import com.example.android.trackmysleepquality.convertNumericQualityToString
 import com.yacine.diceroller.R
 import com.yacine.diceroller.database.SleepNight
+import com.yacine.diceroller.databinding.ListItemSleepNightBinding
 
 class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(SleepNightDiffCallback()) {
 //    var data = listOf<SleepNight>()
@@ -48,40 +51,40 @@ class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(
         holder.bind(item)
     }
 
-     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder private constructor(val binding: ListItemSleepNightBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+//        private val sleepLength: TextView = binding.sleepLength
+//        private val quality: TextView = binding.qualityString
+//        private val qualityImage: ImageView = binding.qualityImage
 
 
-        private val sleepLength: TextView = itemView.findViewById(R.id.sleep_length)
-        private val quality: TextView = itemView.findViewById(R.id.quality_string)
-        private val qualityImage: ImageView = itemView.findViewById(R.id.quality_image)
-
-         companion object {
-             fun from(parent: ViewGroup): ViewHolder {
-                 val layoutInflater = LayoutInflater.from(parent.context)
-                 val view = layoutInflater.inflate(R.layout.list_item_sleep_night, parent, false)
-                 return ViewHolder(view)
-             }
-         }
-
-        fun bind(item: SleepNight) {
-            val res: Resources = itemView.context.resources
-            sleepLength.text = convertDurationToFormatted(item.startTimeMilli, item.endTimeMilli, res)
-            quality.text = convertNumericQualityToString(item.sleepQuality, res)
-
-            qualityImage.setImageResource(
-                when (item.sleepQuality) {
-                    0 -> R.drawable.ic_sleep_0
-                    1 -> R.drawable.ic_sleep_1
-                    2 -> R.drawable.ic_sleep_2
-                    3 -> R.drawable.ic_sleep_3
-                    4 -> R.drawable.ic_sleep_4
-                    5 -> R.drawable.ic_sleep_5
-                    else -> R.drawable.ic_sleep_active
-                }
-            )
+        companion object {
+            fun from(parent: ViewGroup): ViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = ListItemSleepNightBinding.inflate(layoutInflater, parent, false)
+                return ViewHolder(binding)
+            }
         }
 
-
+        fun bind(item: SleepNight) {
+            binding.sleep = item
+            binding.executePendingBindings()
+//            val res: Resources = itemView.context.resources
+//            sleepLength.text = convertDurationToFormatted(item.startTimeMilli, item.endTimeMilli, res)
+//            quality.text = convertNumericQualityToString(item.sleepQuality, res)
+//
+//            qualityImage.setImageResource(
+//                when (item.sleepQuality) {
+//                    0 -> R.drawable.ic_sleep_0
+//                    1 -> R.drawable.ic_sleep_1
+//                    2 -> R.drawable.ic_sleep_2
+//                    3 -> R.drawable.ic_sleep_3
+//                    4 -> R.drawable.ic_sleep_4
+//                    5 -> R.drawable.ic_sleep_5
+//                    else -> R.drawable.ic_sleep_active
+//                }
+//            )
+        }
     }
 }
 
