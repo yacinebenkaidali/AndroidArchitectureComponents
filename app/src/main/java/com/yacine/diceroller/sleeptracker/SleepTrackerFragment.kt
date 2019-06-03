@@ -20,7 +20,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -38,9 +37,8 @@ import com.yacine.diceroller.databinding.FragmentSleepTrackerBinding
  * (Because we have not learned about RecyclerView yet.)
  */
 class SleepTrackerFragment : Fragment() {
-    private val sleepNightAdapter = SleepNightAdapter(SleepNightListener { nightId->
-        Toast.makeText(context, "$nightId", Toast.LENGTH_LONG).show()
-    })
+    private lateinit  var sleepNightAdapter :SleepNightAdapter
+
     /**
      * Called when the Fragment is ready to display content to the screen.
      *
@@ -54,15 +52,20 @@ class SleepTrackerFragment : Fragment() {
         val binding: FragmentSleepTrackerBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_sleep_tracker, container, false
         )
+        val application = requireNotNull(this.activity).application
+        val dataSource = SleepDatabase.getInstance(application).sleepDatabaseDao
+        val viewModelFactory = SleepTrackerViewModelFactory(dataSource, application)
+        val sleepViewModel = ViewModelProviders.of(this, viewModelFactory).get(SleepTrackerViewModel::class.java)
+        sleepNightAdapter = SleepNightAdapter(SleepNightListener { id->
+            sleepViewModel.onSleepNightClicked(id)
+        })
+
         binding.lifecycleOwner = this
         binding.sleepList.adapter = sleepNightAdapter
         val manager = GridLayoutManager(activity, 3)
         binding.sleepList.layoutManager = manager
 
-        val application = requireNotNull(this.activity).application
-        val dataSource = SleepDatabase.getInstance(application).sleepDatabaseDao
-        val viewModelFactory = SleepTrackerViewModelFactory(dataSource, application)
-        val sleepViewModel = ViewModelProviders.of(this, viewModelFactory).get(SleepTrackerViewModel::class.java)
+
         sleepViewModel.navigationToSleepQualite.observe(this, Observer { night ->
             night?.let {
                 findNavController().navigate(
@@ -78,7 +81,12 @@ class SleepTrackerFragment : Fragment() {
                 sleepNightAdapter.submitList(nights)
             }
         })
-
+        sleepViewModel.navigateToSleepDataQuality.observe(this, Observer {id->
+            id?.let {
+                this.findNavController().navigate(SleepTrackerFragmentDirections.actionSleepTrackerFragmentToSleepDetailFragment(id))
+                sleepViewModel.onSleepDataQualityNavigated()
+            }
+        })
         sleepViewModel.showSnackbarEvent.observe(this, Observer {
             if (it == true) {
                 Snackbar.make(

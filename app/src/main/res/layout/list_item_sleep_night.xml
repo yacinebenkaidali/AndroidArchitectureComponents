@@ -8,7 +8,7 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
             android:orientation="vertical"
-            android:onClick="@{() -> clickListener.onClick()}"
+            android:onClick="@{() -> clickListener.onClick(sleep)}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <ImageView

@@ -25,6 +25,7 @@ class SleepQualityViewModelFactory( private val sleepNightKey: Long,
                                     private val dataSource: SleepDatabaseDao
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        @Suppress("UNCHECKED_CAST")
         if (modelClass.isAssignableFrom(SleepQualityViewModel::class.java)) {
             return SleepQualityViewModel(sleepNightKey,dataSource) as T
         }
