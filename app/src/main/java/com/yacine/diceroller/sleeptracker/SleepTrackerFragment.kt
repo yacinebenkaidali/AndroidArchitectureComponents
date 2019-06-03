@@ -37,7 +37,7 @@ import com.yacine.diceroller.databinding.FragmentSleepTrackerBinding
  * (Because we have not learned about RecyclerView yet.)
  */
 class SleepTrackerFragment : Fragment() {
-    private lateinit  var sleepNightAdapter :SleepNightAdapter
+    private lateinit var sleepNightAdapter: SleepNightAdapter
 
     /**
      * Called when the Fragment is ready to display content to the screen.
@@ -48,6 +48,8 @@ class SleepTrackerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
         // Get a reference to the binding object and inflate the fragment views.
         val binding: FragmentSleepTrackerBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_sleep_tracker, container, false
@@ -56,13 +58,21 @@ class SleepTrackerFragment : Fragment() {
         val dataSource = SleepDatabase.getInstance(application).sleepDatabaseDao
         val viewModelFactory = SleepTrackerViewModelFactory(dataSource, application)
         val sleepViewModel = ViewModelProviders.of(this, viewModelFactory).get(SleepTrackerViewModel::class.java)
-        sleepNightAdapter = SleepNightAdapter(SleepNightListener { id->
+        sleepNightAdapter = SleepNightAdapter(SleepNightListener { id ->
             sleepViewModel.onSleepNightClicked(id)
         })
 
         binding.lifecycleOwner = this
         binding.sleepList.adapter = sleepNightAdapter
         val manager = GridLayoutManager(activity, 3)
+        manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return when (position) {
+                    0 -> 3
+                    else -> 1
+                }
+            }
+        }
         binding.sleepList.layoutManager = manager
 
 
@@ -78,12 +88,13 @@ class SleepTrackerFragment : Fragment() {
         })
         sleepViewModel.nights.observe(this, Observer { nights ->
             if (nights != null) {
-                sleepNightAdapter.submitList(nights)
+                sleepNightAdapter.addHeaderAndSubmitList(nights)
             }
         })
-        sleepViewModel.navigateToSleepDataQuality.observe(this, Observer {id->
+        sleepViewModel.navigateToSleepDataQuality.observe(this, Observer { id ->
             id?.let {
-                this.findNavController().navigate(SleepTrackerFragmentDirections.actionSleepTrackerFragmentToSleepDetailFragment(id))
+                this.findNavController()
+                    .navigate(SleepTrackerFragmentDirections.actionSleepTrackerFragmentToSleepDetailFragment(id))
                 sleepViewModel.onSleepDataQualityNavigated()
             }
         })
